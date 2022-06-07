@@ -1,1 +1,68 @@
+//Given an array A of size N of integers. Your task is to find the minimum and maximum elements in the array.
 
+ 
+
+Example 1:
+
+Input:
+N = 6
+A[] = {3, 2, 1, 56, 10000, 167}
+Output:
+min = 1, max =  10000
+//
+CODE:
+// { Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+pair<long long, long long> getMinMax(long long a[], int n) ;
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n;
+        cin >> n;
+        ll a[n];
+        for (int i = 0; i < n; i++) cin >> a[i];
+
+        pair<ll, ll> pp = getMinMax(a, n);
+
+        cout << pp.first << " " << pp.second << endl;
+    }
+    return 0;
+}// } Driver Code Ends
+
+
+
+
+
+pair<long long , long long>getMinMax(long long arr[], int n) {
+pair<long long , long long>Pair1;    
+    
+if(n==1){
+       Pair1.second =arr[0];
+     Pair1.first=arr[0];
+        return Pair1;
+    }
+    if(arr[0]>arr[1]){
+         Pair1.second=arr[0];
+         Pair1.first=arr[1];
+    }
+    else{
+           Pair1.second=arr[1];
+     Pair1.first=arr[0];
+    }
+    for(int i=2;i<n;i++){
+        if(arr[i]> Pair1.second){
+             Pair1.second=arr[i];
+        }
+        else if(arr[i]< Pair1.first){
+             Pair1.first=arr[i];
+        }
+    }
+    return  Pair1;
+
+    
+};
