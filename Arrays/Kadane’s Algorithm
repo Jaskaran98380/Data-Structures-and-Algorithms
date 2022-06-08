@@ -1,0 +1,29 @@
+Problem Statement
+You are given an array (ARR) of length N, consisting of integers. You have to find the sum of the subarray (including empty subarray) having maximum sum among all subarrays.
+A subarray is a contiguous segment of an array. In other words, a subarray can be formed by removing 0 or more integers from the beginning, and 0 or more integers from the end of an array.
+
+Sample Input 1 :
+9
+1 2 7 -4 3 2 -10 9 1
+Sample Output 1 :
+11
+**********************************
+
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+            int max=nums[0];
+        int n=nums.size();
+    int sum=0;
+    for(int i=0;i<n;i++){
+        sum=sum+nums[i];
+        if(sum>max){
+            max=sum;
+        }
+        if(sum<0){
+            sum=0;
+        }
+    }
+    return max;
+    }
+};
