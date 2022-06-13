@@ -1,0 +1,58 @@
+Problem Statement
+You have been given a 2-D array 'MAT' of size M x N where 'M' and 'N' denote the number of rows and columns, respectively. The elements of each row are sorted in non-decreasing order.
+Moreover, the first element of a row is greater than the last element of the previous row (if exists).
+You are given an integer 'TARGET' and your task is to find if it exists in the given 'MAT' or not.
+Example :
+Given Matrix : 1 1 and Target : 8
+               4 8 
+
+The output should be "TRUE" as 8 is present in the Matrix.
+
+****************************
+//kind of brute force approach(may be better at times)
+#include <bits/stdc++.h> 
+#include <vector>
+
+bool findTargetInMatrix(vector < vector < int >> & mat, int m, int n, int target) {
+    // Write your code here.
+    int i;
+    for( i=0;i<m;i++){
+        if(target<=mat[i][n-1]){
+            break;
+        }
+        if(i==m-1){
+            if(target>mat[i][n-1]){
+                return false;
+            }
+        }
+    }
+    for(int j=0;j<n;j++){
+        if(mat[i][j]==target){
+            return true;
+        }
+    }
+    return false;
+}
+************************************
+// may be optimised(not sure)
+#include <bits/stdc++.h> 
+#include <vector>
+
+bool findTargetInMatrix(vector < vector < int >> & mat, int m, int n, int target) {
+    // Write your code here.
+    int l=0;
+    int h=(mat.size()*mat[0].size())-1;
+    while(l<=h){
+        int mid=l+(h-l)/2;
+        if(mat[mid/mat[0].size()][mid%mat[0].size()]==target){
+            return true;
+        }
+        else if(mat[mid/mat[0].size()][mid%mat[0].size()]>target){
+            h=mid-1;
+        }
+        else{
+            l=mid+1;
+        }
+    }
+    return false;
+}
