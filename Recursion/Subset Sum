@@ -1,0 +1,31 @@
+Problem Statement
+You are given an array of ‘N’ integers. You have to find the sum of all the subsets in the non-decreasing order of the given array.
+Sample Input 1 :
+2
+2
+1 2
+1
+0
+Sample Output 1 :
+0 1 2 3
+0 0
+**************************
+void func(int ind,int sum,vector<int>&arr,int N,vector<int>&v){
+    if(ind==N){
+        v.push_back(sum);
+        return;
+    }
+    func(ind+1,sum+arr[ind],arr,N,v);
+    func(ind+1,sum,arr,N,v);
+}
+
+vector<int> subsetSum(vector<int> &arr)
+{
+    // Write your code here.
+    int N=arr.size();
+     vector<int>v;
+        func(0,0,arr,N,v);
+    sort(v.begin(),v.end());
+        return v;
+}
+
