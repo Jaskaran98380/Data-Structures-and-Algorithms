@@ -65,6 +65,9 @@ public:
             front=ptr->next->next;
             if(ptr->random!=NULL){
             ptr->next->random=ptr->random->next;}
+               else{
+                ptr->next->random=NULL;
+            }
             ptr=front;
         }
         
