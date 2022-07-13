@@ -1,0 +1,118 @@
+Problem Statement
+You need to implement the Stack data structure using a Singly Linked List.
+Create a class named 'Stack' which supports the following operations(all in O(1) time):
+
+
+getSize: Returns an integer. Gets the current size of the stack
+
+isEmpty: Returns a boolean. Gets whether the stack is empty
+
+push: Returns nothing. Accepts an integer. Puts that integer at the top of the stack
+
+pop: Returns nothing. Removes the top element of the stack. Does nothing if the stack is empty.
+
+getTop: Returns an integer. Gets the top element of the stack. Returns -1 if the stack is empty
+Input format:
+The first line of the input will contain the number of queries, 'T'.
+The next 'T' lines will contain the queries. They can be of the following five types:
+
+'1': Print the current size of the stack
+
+'2': Find whether the stack is empty. Print "true" if yes, "false" otherwise
+
+'3': This query will be given like "3 val" where val can be any non-negative integer. Put val on the top of the stack. Print nothing
+
+'4': Remove the top element of the stack. Print nothing
+
+'5': Print the top element of the stack. If the stack is empty, print -1
+Output format:
+For each test case, print the result of each query on a separate line. If the query is '3' or '4', print nothing (not even an empty line)
+
+The output of each test case will be printed in a separate line.
+Note:
+You do not need to print anything, it has already been taken care of. Just implement the given function.
+****************************************/*/*/*/*/*/*/*/*/**/*/*//*
+
+/****************************************************************
+ 
+    Following is the class structure of the Node class:
+
+        class Node
+        {
+        public:
+	        int data;
+	        Node *next;
+	        Node(int data)
+	        {
+		        this->data = data;
+		        this->next = NULL;
+	        }
+        };
+
+*****************************************************************/
+
+class Stack
+{
+    //Write your code here
+    Node* top;
+    int count;
+
+public:
+    Stack()
+    {
+        //Write your code here 
+        top=NULL;
+        count=0;
+    }
+
+    int getSize()
+    {
+        //Write your code here
+        return count;
+        
+    }
+
+    bool isEmpty()
+    {
+        //Write your code here  
+        if(count==0){
+            return true;
+        }
+        return false;
+    }
+
+    void push(int data)
+    {
+        //Write your code here
+        
+        Node*node1=new Node(data);
+        if(!node1){
+            return;
+        }
+        node1->next=top;
+        top=node1;
+        count++;
+    }
+
+    void pop()
+    {
+        if(count==0){
+            return;
+        }
+       
+        top=top->next;
+        count--;
+       
+        
+        //Write your code here
+    }
+
+    int getTop()
+    {
+        //Write your code here
+        if(count==0){
+            return -1;
+        }
+        return top->data;
+    }
+};
