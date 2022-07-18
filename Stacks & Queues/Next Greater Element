@@ -1,0 +1,129 @@
+//CODING NINJAS QUESTION
+
+Problem Statement
+You are given an array arr of length N. You have to return a list of integers containing the NGE(next greater element) of each element of the given array. The NGE for an element X is the first greater element on the right side of X in the array. Elements for which no greater element exists, consider the NGE as -1.
+For Example :
+If the given array is [1, 3, 2], then you need to return [3, -1, -1]. Because for 1, 3 is the next greater element, for 3 it does not have any greater number to its right, and similarly for 2.
+Input Format :
+The first line of input contains a single integer T, representing the number of test cases or queries to be run. 
+
+Then the T test cases follow.
+
+The first line of each test case contains an integer N, representing the length of the input array(ARR).
+
+The second line contains N single space-separated integers representing elements of the array arr.
+Output Format :
+For each test case, print a list of integers each representing the NGE(next greater element) of each element of the given array in a single line.
+Note :
+You are not required to print the expected output, it has already been taken care of. Just implement the function.
+******************************
+#include<bits/stdc++.h>
+vector<int> nextGreater(vector<int> &nums, int n) {
+    // Write your code here
+          
+      vector < int > nge(n, -1);
+      stack < int > st;
+      for (int i =  n - 1; i >= 0; i--) {
+        while (!st.empty() && st.top() <= nums[i]) {
+          st.pop();
+        }
+
+        
+          if (!st.empty()) nge[i] = st.top();
+        
+        st.push(nums[i]);
+      }
+      return nge;
+
+}
+
+**********************************************
+//STRIVER EXPLIANED ANOTHER VARIANT(WHAT IN CASE IF WE WANT TO CHECK FOR CIRCULAR ARRAY)
+**************************
+#include<bits/stdc++.h>
+
+using namespace std;
+class Solution {
+  public:
+    vector < int > nextGreaterElements(vector < int > & nums) {
+      int n = nums.size();
+      vector < int > nge(n, -1);
+      stack < int > st;
+      for (int i = 2 * n - 1; i >= 0; i--) {
+        while (!st.empty() && st.top() <= nums[i % n]) {
+          st.pop();
+        }
+
+        if (i < n) {
+          if (!st.empty()) nge[i] = st.top();
+        }
+        st.push(nums[i % n]);
+      }
+      return nge;
+    }
+};
+int main() {
+  Solution obj;
+  vector < int > v {5,7,1,2,6,0};
+  vector < int > res = obj.nextGreaterElements(v);
+  cout << "The next greater elements are" << endl;
+  for (int i = 0; i < res.size(); i++) {
+    cout << res[i] << " ";
+  }
+}
+
+**************************************************
+//LEETCODE QUESTION
+
+
+The next greater element of some element x in an array is the first greater element that is to the right of x in the same array.
+
+You are given two distinct 0-indexed integer arrays nums1 and nums2, where nums1 is a subset of nums2.
+
+For each 0 <= i < nums1.length, find the index j such that nums1[i] == nums2[j] and determine the next greater element of nums2[j] in nums2. If there is no next greater element, then the answer for this query is -1.
+
+Return an array ans of length nums1.length such that ans[i] is the next greater element as described above.
+
+ 
+
+Example 1:
+
+Input: nums1 = [4,1,2], nums2 = [1,3,4,2]
+Output: [-1,3,-1]
+Explanation: The next greater element for each value of nums1 is as follows:
+- 4 is underlined in nums2 = [1,3,4,2]. There is no next greater element, so the answer is -1.
+- 1 is underlined in nums2 = [1,3,4,2]. The next greater element is 3.
+- 2 is underlined in nums2 = [1,3,4,2]. There is no next greater element, so the answer is -1.
+Example 2:
+
+Input: nums1 = [2,4], nums2 = [1,2,3,4]
+Output: [3,-1]
+Explanation: The next greater element for each value of nums1 is as follows:
+- 2 is underlined in nums2 = [1,2,3,4]. The next greater element is 3.
+- 4 is underlined in nums2 = [1,2,3,4]. There is no next greater element, so the answer is -1.
+************************************************
+class Solution {
+public:
+    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+        int n=nums2.size();
+        vector<int>vc;
+        unordered_map<int,int>mp;
+        stack<int>st;
+        for(int i=n-1;i>=0;i--){
+            while(!st.empty() && st.top()<=nums2[i]){
+                st.pop();
+            }
+            if(st.empty()){
+                mp[nums2[i]]=-1;
+            }
+            else{
+                mp[nums2[i]]=st.top();
+            }
+            st.push(nums2[i]);
+        }
+        for(int i=0;i<nums1.size();i++){
+           vc.push_back(mp[nums1[i]]);
+        }
+        return vc;
+    }
+};
