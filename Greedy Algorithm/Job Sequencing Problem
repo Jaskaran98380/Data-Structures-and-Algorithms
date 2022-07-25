@@ -78,3 +78,41 @@ class Solution
         return vc;
     } 
 };
+
+*******************************************
+
+//when 2d array is given instead of already made struct!
+#include<bits/stdc++.h>
+
+bool static comparator(vector<int> a,vector<int> b){
+        return a[1]>b[1];
+    }
+
+int jobScheduling(vector<vector<int>> &jobs)
+{
+    // Write your code here
+    int n=jobs.size();
+           sort(jobs.begin(),jobs.end(),comparator);
+        int maxi=jobs[0][0];
+        for(int i=1;i<n;i++){
+            maxi=max(maxi,jobs[i][0]);
+        }
+        int arr2[maxi];
+        for(int i=0;i<maxi;i++){
+            arr2[i]=-1;
+        }
+        int jobcnt=0;
+        int profitcnt=0;
+        for(int i=0;i<n;i++){
+            for(int j=jobs[i][0]-1;j>=0;j--){
+                if(arr2[j]==-1){
+                    arr2[j]=1;
+                    jobcnt++;
+                    profitcnt+=jobs[i][1];
+                    break;
+                }
+            }
+        }
+       return profitcnt;
+}
+
