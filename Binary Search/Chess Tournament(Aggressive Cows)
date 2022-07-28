@@ -1,0 +1,41 @@
+https://www.codingninjas.com/codestudio/problems/ayush-gives-ninjatest_1097574?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+//refer to the problem here 
+
+*****************************************
+
+#include<bits/stdc++.h>
+bool canPlace(int mid,vector<int>arr,int c){
+    int n=arr.size();
+    int cnt=1;
+    int dist=arr[0];
+    
+    for(int i=1;i<n;i++){
+        if(arr[i]-dist>=mid){
+            dist=arr[i];
+            cnt++;
+        }
+        if(cnt==c){
+            return true;
+        }
+    }
+    return false;
+}
+
+int chessTournament(vector<int> positions , int n ,  int c){
+	// Write your code here
+    sort(positions.begin(),positions.end());
+    int low=1;
+    int res=-1;
+    int high=positions[n-1]-positions[0];
+    while(low<=high){
+        int mid=low+((high-low)/2);
+        if(canPlace(mid,positions,c)){
+            res=mid;
+            low=mid+1;
+        }
+        else{
+            high=mid-1;
+        }
+    }
+    return res;
+}
