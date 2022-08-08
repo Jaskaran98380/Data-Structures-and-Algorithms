@@ -52,3 +52,27 @@ public:
         return v;
     }
 };
+
+//iterative approach
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+                stack<TreeNode*>s;
+        vector<int>v;
+        while(true){
+            if(root!=NULL){
+                v.push_back(root->val);
+                s.push(root);
+                root=root->left;
+            }
+            else{
+                if(s.empty())break;
+                root=s.top();
+                s.pop();
+                root=root->right;
+                
+            }
+        }
+        return v;
+    }
+};
