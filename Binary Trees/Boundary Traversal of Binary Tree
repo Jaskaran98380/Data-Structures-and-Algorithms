@@ -69,7 +69,10 @@ void rightPortion(TreeNode<int>*root,vector<int>&v){
 }
 
 void leaves(TreeNode<int>*root,vector<int>&v){
-    if(isLeaf(root))v.push_back(root->data);
+    if(isLeaf(root)){
+    v.push_back(root->data);
+    return;
+    }
     if(root->left)leaves(root->left,v);
     if(root->right)leaves(root->right,v);
 }
