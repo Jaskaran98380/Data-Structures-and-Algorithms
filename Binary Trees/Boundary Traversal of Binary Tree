@@ -1,0 +1,90 @@
+print boundary of binary tree in anticlockwise manner!
+https://www.codingninjas.com/codestudio/problems/boundary-traversal_790725?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+
+*****************************************
+
+/************************************************************
+
+    Following is the Binary Tree node structure:
+    
+    template <typename T>
+    class TreeNode {
+        public :
+        T data;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T data) {
+            this -> data = data;
+            left = NULL;
+            right = NULL;
+        }
+
+        ~TreeNode() {
+            if(left)
+                delete left;
+            if(right)
+                delete right;
+        }
+    };
+
+************************************************************/
+#include<bits/stdc++.h>
+bool isLeaf(TreeNode<int>*root){
+    if(!root->left && !root->right){
+        return true;
+    }
+    return false;
+}
+
+void leftPortion(TreeNode<int>*root,vector<int>&v){
+    TreeNode<int>*node=root->left;
+    while(node){
+        if(!isLeaf(node)){
+            v.push_back(node->data);
+        }
+        if(node->left){
+            node=node->left;
+        }
+        else{
+            node=node->right;
+        }
+    }
+}
+
+void rightPortion(TreeNode<int>*root,vector<int>&v){
+    TreeNode<int>*node=root->right;
+    stack<int>s;
+    while(node){
+        if(!isLeaf(node))s.push(node->data);
+        if(node->right)node=node->right;
+        else{
+            node=node->left;
+        }
+    }
+    while(!s.empty()){
+        v.push_back(s.top());
+        s.pop();
+    }
+}
+
+void leaves(TreeNode<int>*root,vector<int>&v){
+    if(isLeaf(root))v.push_back(root->data);
+    if(root->left)leaves(root->left,v);
+    if(root->right)leaves(root->right,v);
+}
+
+
+
+vector<int> traverseBoundary(TreeNode<int>* root){
+    // Write your code here.
+    vector<int>v;
+    if(root==NULL){
+        return v;
+    }
+    if(!isLeaf(root))v.push_back(root->data);
+    leftPortion(root,v);
+    leaves(root,v);
+    rightPortion(root,v);
+    return v;
+}
