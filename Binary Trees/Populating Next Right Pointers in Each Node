@@ -77,3 +77,48 @@ public:
         return root;
     }
 };
+
+*******************************************
+//you can use this queue approach in the above ques also!
+https://www.codingninjas.com/codestudio/problems/985347?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1
+CODE:
+/*
+    ----------------- Binary Tree node class for reference -----------------
+
+    template <typename T>
+    class BinaryTreeNode {
+        public : 
+            T data;
+            BinaryTreeNode<T> *left;
+            BinaryTreeNode<T> *right;
+            BinaryTreeNode<T> *next;
+
+            BinaryTreeNode(T data) {
+                this -> data = data;
+                left = NULL;
+                right = NULL;
+                next = NULL;
+            }
+    };
+*/
+#include<bits/stdc++.h>
+void connectNodes(BinaryTreeNode< int > *root) {
+    // Write your code here.
+        if(!root) return;
+    queue<BinaryTreeNode<int>*> q;
+    q.push(root);
+    
+    while(!q.empty()){
+        int size = q.size();
+        while(size>0){
+            BinaryTreeNode<int> * node = q.front(); q.pop();
+            if(size > 1) node->next = q.front();
+            else{
+                node->next=NULL;
+            }
+            if(node->left) q.push(node->left);
+            if(node->right) q.push(node->right);
+            size--;
+        } 
+    }
+}
