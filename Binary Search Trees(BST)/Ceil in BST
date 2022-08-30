@@ -46,8 +46,6 @@ int findCeil(Node* root, int key) {
     if (root == NULL) return ans;
 
     // Your code here
-   
-        if(!root)              return ans;
     if(root->data == key)  return root->data;
     
     if(root->data > key) {
