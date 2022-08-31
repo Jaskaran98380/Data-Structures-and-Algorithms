@@ -1,0 +1,59 @@
+https://www.codingninjas.com/codestudio/problems/893103?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0
+
+*********************************************
+
+/************************************************************
+
+    Following is the Binary Tree node structure
+    
+    template <typename T>
+    class TreeNode {
+        public :
+        T data;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T data) {
+            this -> data = data;
+            left = NULL;
+            right = NULL;
+        }
+
+        ~TreeNode() {
+            if(left)
+                delete left;
+            if(right)
+                delete right;
+        }
+    };
+
+************************************************************/
+class Help{
+    public:
+    int maxNode;
+    int minNode;
+    int maxSize;
+    Help(int maxi,int mini,int size){
+        this->maxNode=maxi;
+        this->minNode=mini;
+        this->maxSize=size;
+    }
+};
+Help helper(TreeNode<int>*root){
+    if(root==NULL){
+         return Help (INT_MIN,INT_MAX,0);
+       
+    }
+    Help left=helper(root->left);
+    Help right=helper(root->right);
+    if(root->data>left.maxNode && root->data<right.minNode){
+        return Help(max(root->data,right.maxNode),min(root->data,left.minNode),1+left.maxSize+right.maxSize);
+    }
+    return Help(INT_MAX,INT_MIN,max(left.maxSize,right.maxSize));
+}
+
+int largestBST(TreeNode<int>* root) 
+{
+    // Write your code here.
+    return helper(root).maxSize;
+}
