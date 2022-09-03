@@ -1,0 +1,44 @@
+https://www.codingninjas.com/codestudio/problems/merge-k-sorted-arrays_975379?leftPanelTab=0&utm_source=youtube&utm_medium=affiliate&utm_campaign=Lovebabbar
+
+******************************************
+
+#include<bits/stdc++.h>
+class Node{
+    public:
+    int data;
+    int row_index;
+    int col_index;
+   
+    Node(int data,int row,int col){
+        this->data=data;
+        this->row_index=row;
+        this->col_index=col;
+    }
+};
+
+class compare{
+    public:
+    bool operator()(Node*a,Node*b){
+        return a->data>b->data;
+    }
+};
+vector<int> mergeKSortedArrays(vector<vector<int>>&kArrays, int k)
+{
+    // Write your code here.
+    vector<int>ans;
+    priority_queue<Node*,vector<Node*>,compare>pq;
+        for(int i=0;i<k;i++){
+            Node*temp=new Node(kArrays[i][0],i,0);
+            pq.push(temp);
+        }
+    while(pq.size()>0){
+    Node*temp2=pq.top();
+    ans.push_back(temp2->data);
+    pq.pop();
+    if(temp2->col_index+1<kArrays[temp2->row_index].size()){
+        Node*temp3=new Node(kArrays[temp2->row_index][temp2->col_index+1],temp2->row_index,temp2->col_index+1);
+        pq.push(temp3);
+    }
+    }
+    return ans;
+}
