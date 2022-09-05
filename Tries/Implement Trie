@@ -1,0 +1,97 @@
+https://www.codingninjas.com/codestudio/problems/implement-trie_631356?topList=love-babbar-dsa-sheet-problems&leftPanelTab=0&utm_source=youtube&utm_medium=affiliate&utm_campaign=Lovebabbar
+
+*******************************
+
+/*
+    Your Trie object will be instantiated and called as such:
+    Trie* obj = new Trie();
+    obj->insert(word);
+    bool check2 = obj->search(word);
+    bool check3 = obj->startsWith(prefix);
+ */
+class TrieNode{
+    public:
+    char data;
+    TrieNode*children[26];
+    bool is_terminal;
+    
+    TrieNode(char ch){
+        data=ch;
+        for(int i=0;i<26;i++){
+            children[i]=NULL;
+        }
+        is_terminal=false;
+    }
+};
+
+class Trie {
+    TrieNode *root;
+public:
+
+    /** Initialize your data structure here. */
+    Trie() {
+        root=new TrieNode('\0');
+    }
+
+    /** Inserts a word into the trie. */
+    void insertWord(TrieNode*root,string word){
+        if(word.length()==0){
+            root->is_terminal=true;
+            return;
+        }
+        int index=word[0]-'a';
+        TrieNode*child;
+        if(root->children[index]!=NULL){
+            child=root->children[index];
+        }
+        else{
+            child=new TrieNode(word[0]);
+            root->children[index]=child;
+        }
+        insertWord(child,word.substr(1));
+    }
+    
+    void insert(string word) {
+        insertWord(root,word);
+    }
+
+    /** Returns if the word is in the trie. */
+    bool searchWord(TrieNode*root,string word){
+         if(word.length()==0){
+             return root->is_terminal;
+        }
+        int index=word[0]-'a';
+        TrieNode*child;
+        if(root->children[index]!=NULL){
+            child=root->children[index];
+        }
+        else{
+            return false;
+        }
+        return searchWord(child,word.substr(1));
+    }
+    
+    bool search(string word) {
+       return searchWord(root,word);
+    }
+
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    bool startHelper(TrieNode*root,string prefix){
+               if(prefix.length()==0){
+             return true;
+        }
+        int index=prefix[0]-'a';
+        TrieNode*child;
+        if(root->children[index]!=NULL){
+            child=root->children[index];
+        }
+        else{
+            return false;
+        }
+        return startHelper(child,prefix.substr(1));
+    }
+    
+    bool startsWith(string prefix) {
+        return startHelper(root,prefix);
+    }
+};
