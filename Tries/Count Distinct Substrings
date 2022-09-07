@@ -1,0 +1,53 @@
+https://www.codingninjas.com/codestudio/problems/count-distinct-substrings_985292?utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_tries_videos&leftPanelTab=0
+
+***********************************
+
+class Node{
+    public:
+    char data;
+    Node*children[26];
+    bool is_terminal;
+    
+    Node(char ch){
+        data=ch;
+        for(int i=0;i<26;i++){
+            children[i]=NULL;
+        }
+        is_terminal=false;
+    }
+};
+class Trie{
+   
+    public:
+   
+    
+    void countHelper(Node*root,string s,int &count){
+        if(s.size()==0){
+            root->is_terminal=true;
+            return;
+        }
+        int index=s[0]-'a';
+        Node*child;
+        if(root->children[index]!=NULL){
+            child=root->children[index];
+        }
+        else{
+            child=new Node(s[0]);
+            root->children[index]=child;
+            count++;
+        }
+        countHelper(child,s.substr(1),count);
+    }
+};
+
+int countDistinctSubstrings(string &s)
+{
+    //    Write your code here.
+    Trie t;
+    Node*root=new Node('\0');
+    int count=0;
+    for(int i=0;i<s.size();i++){
+      t.countHelper(root,s.substr(i),count);
+    }
+    return count + 1;
+}
