@@ -34,6 +34,7 @@ There are no duplicate edges.
 There are no self edges.
 
 *************************************
+//BFS
 
 class Solution {
 public:
@@ -71,6 +72,41 @@ public:
             adj[edges[i][1]].push_back(edges[i][0]);
         }
         return bfs(adj,visited,source,destination);
+   
+        
+    }
+};
+
+***********************************
+//DFS
+class Solution {
+public:
+    void dfs(vector<int>adj[],bool visited[],int start,int end){
+        visited[start]=true;
+          
+            for(auto it:adj[start]){
+                if(!visited[it]){
+                    dfs(adj,visited,it,end);
+                }
+            }
+        }
+    
+    
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+             if(source>=n || destination>=n){
+            return false;
+        }
+        bool visited[n];
+        for(int i=0;i<n;i++){
+            visited[i]=false;
+        }
+        vector<int>adj[n];
+        for(int i=0;i<edges.size();i++){
+            adj[edges[i][0]].push_back(edges[i][1]);
+            adj[edges[i][1]].push_back(edges[i][0]);
+        }
+        dfs(adj,visited,source,destination);
+      return visited[destination];
    
         
     }
