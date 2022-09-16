@@ -1,0 +1,100 @@
+Given a matrix mat of size N x M where every element is either ‘O’ or ‘X’.
+Replace all ‘O’ with ‘X’ that are surrounded by ‘X’.
+A ‘O’ (or a set of ‘O’) is considered to be by surrounded by ‘X’ if there are ‘X’ at locations just below, just above, just left and just right of it.
+
+Example 1:
+
+Input: n = 5, m = 4
+mat = {{'X', 'X', 'X', 'X'}, 
+       {'X', 'O', 'X', 'X'}, 
+       {'X', 'O', 'O', 'X'}, 
+       {'X', 'O', 'X', 'X'}, 
+       {'X', 'X', 'O', 'O'}}
+Output: ans = {{'X', 'X', 'X', 'X'}, 
+               {'X', 'X', 'X', 'X'}, 
+               {'X', 'X', 'X', 'X'}, 
+               {'X', 'X', 'X', 'X'}, 
+               {'X', 'X', 'O', 'O'}}
+Explanation: Following the rule the above 
+matrix is the resultant matrix. 
+Your Task:
+You do not need to read input or print anything. Your task is to complete the function fill() which takes n, m and mat as input parameters ad returns a 2D array representing the resultant matrix.
+
+Expected Time Complexity: O(n*m)
+Expected Auxiliary Space: O(n*m)
+
+Constraints:
+1 ≤ n, m ≤ 500
+
+***********************************
+
+class Solution{
+    private:
+    void dfs(vector<vector<char>>mat,int row,int col,vector<vector<bool>>& visited,int dRow[],int dCol[],int n,int m){
+        visited[row][col]=true;
+        for(int i=0;i<4;i++){
+            int row2=row+dRow[i];
+            int col2=col+dCol[i];
+            if(row2>=0 && row2<n && col2>=0 && col2<m && mat[row2][col2]=='O' && !visited[row2][col2]){
+                dfs(mat,row2,col2,visited,dRow,dCol,n,m);
+            }
+        }
+    }
+public:
+    vector<vector<char>> fill(int n, int m, vector<vector<char>> mat)
+    {
+        // code here
+        vector<vector<bool>>visited(n,vector<bool>(m,false));
+        int dRow[]={-1,0,1,0};
+        int dCol[]={0,1,0,-1};
+        //first row and last row
+        for(int j=0;j<m;j++){
+            
+            //first row
+                if(mat[0][j]=='O'){
+                    if(!visited[0][j]){
+                        dfs(mat,0,j,visited,dRow,dCol,n,m);
+                    }
+                
+            }
+            //last row
+                 if(mat[n-1][j]=='O'){
+                    if(!visited[n-1][j]){
+                        dfs(mat,n-1,j,visited,dRow,dCol,n,m);
+                    }
+                
+            }
+            
+        }
+        //first column and last column
+            for(int i=0;i<n;i++){
+            //first column
+                if(mat[i][0]=='O'){
+                    if(!visited[i][0]){
+                        dfs(mat,i,0,visited,dRow,dCol,n,m);
+                    }
+                
+            }
+            //last column
+                 if(mat[i][m-1]=='O'){
+                    if(!visited[i][m-1]){
+                        dfs(mat,i,m-1,visited,dRow,dCol,n,m);
+                    }
+                
+            }
+            
+        }
+        
+            
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(mat[i][j]=='O'){
+                    if(!visited[i][j]){
+                        mat[i][j]='X';
+                    }
+                }
+            }
+        }
+        return mat;
+    }
+};
