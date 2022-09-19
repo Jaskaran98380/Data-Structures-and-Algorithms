@@ -1,0 +1,98 @@
+Given a boolean 2D matrix grid of size n * m. You have to find the number of distinct islands where a group of connected 1s (horizontally or vertically) forms an island. Two islands are considered to be distinct if and only if one island is equal to another (not rotated or reflected).
+
+Example 1:
+
+Input:
+grid[][] = {{1, 1, 0, 0, 0},
+            {1, 1, 0, 0, 0},
+            {0, 0, 0, 1, 1},
+            {0, 0, 0, 1, 1}}
+Output:
+1
+Explanation:
+Island 1, 1 at the top left corner is same as island
+1, 1 at the bottom right corner.
+Example 2:
+
+Input:
+grid[][] = {{1, 1, 0, 1, 1},
+            {1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1},
+            {1, 1, 0, 1, 1}}
+Output:
+3
+Explanation:
+Distinct islands are: 1, 1 at the top left corner;
+1, 1 at the top right corner and 1 at the bottom 
+right corner. We ignore the island 1, 1 at the 
+bottom left corner since 1, 1 it is identical to the 
+top right corner.
+Your Task:
+
+You don't need to read or print anything. Your task is to complete the function countDistinctIslands() which takes the grid as an input parameter and returns the total number of distinct islands.
+
+Expected Time Complexity: O(n * m)
+Expected Space Complexity: O(n * m)
+
+Constraints:
+1 ≤ n, m ≤ 500
+grid[i][j] == 0 or grid[i][j] == 1
+
+*****************************************
+
+class Solution {
+    private:
+      void bfs(int row,int col,vector<vector<int>>&visited,vector<vector<int>>&grid,vector<pair<int,int>>&v,int dRow[],int dCol[]){
+      int n=grid.size();
+      int m=grid[0].size();
+      queue<pair<int,int>>q;
+      q.push({row,col});
+      visited[row][col]=1;
+     
+      while(!q.empty()){
+          int r=q.front().first;
+          int c=q.front().second;
+          q.pop();
+         v.push_back({r,c});
+            for(int i=0;i<4;i++){
+             
+                  int deltaRow=r+dRow[i];
+                  int deltaCol=c+dCol[i];
+                  if(deltaRow>=0 && deltaRow<n && deltaCol>=0 && deltaCol<m && grid[deltaRow][deltaCol]==1 && !visited[deltaRow][deltaCol]){
+                    q.push({deltaRow,deltaCol});
+                    visited[deltaRow][deltaCol]=1;
+                  }
+              }
+      }
+        
+          
+      }
+      
+  
+  public:
+    int countDistinctIslands(vector<vector<int>>& grid) {
+        // code here
+        int dRow[]={-1,0,1,0};
+        int dCol[]={0,1,0,-1};
+              int n=grid.size();
+        int m=grid[0].size();
+        vector<vector<int>>visited(n,vector<int>(m,0));
+        set<vector<pair<int,int>>>s;
+      
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(!visited[i][j] && grid[i][j]==1){
+                      vector<pair<int,int>>v;
+                    bfs(i,j,visited,grid,v,dRow,dCol);
+                    for(int k=0;k<v.size();k++){
+                        v[k].first-=i;
+                        v[k].second-=j;
+                    }
+                    s.insert(v);
+                }
+            }
+        }
+        return s.size();
+        
+    }
+};
