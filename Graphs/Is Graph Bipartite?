@@ -77,3 +77,40 @@ public:
         return true;
     }
 };
+
+//dfs
+class Solution {
+    private:
+    bool dfs(int start,int col,vector<vector<int>>graph,int colour[]){
+        colour[start]=col;
+     
+            for(int it:graph[start]){
+                if(colour[it]==-1){
+                    if(!dfs(it,!colour[start],graph,colour))return false;
+                }
+                else if(colour[start]==colour[it])
+                    {
+                        return false;
+                }
+            }
+         return true;
+        }
+   
+    
+public:
+    bool isBipartite(vector<vector<int>>& graph) {
+        int v=graph.size();
+        int colour[v];
+        for(int i=0;i<v;i++){
+            colour[i]=-1;
+        }
+        for(int i=0;i<v;i++){
+            if(colour[i]==-1){
+                if(!dfs(i,0,graph,colour)){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+};
