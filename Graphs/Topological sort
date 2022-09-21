@@ -41,6 +41,7 @@ Constraints:
 1 ≤ E ≤ (N*(N-1))/2
 
 **********************************
+//dfs
 
 class Solution
 {
@@ -70,6 +71,43 @@ class Solution
 	    while(!s.empty()){
 	        v.push_back(s.top());
 	        s.pop();
+	    }
+	    return v;
+	}
+};
+***************************************
+
+//Kahn's Algo(BFS)
+
+class Solution
+{
+	public:
+	//Function to return list containing vertices in Topological order. 
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    // code here
+	    vector<int>v;
+	    queue<int>q;
+	    int inorder[V]={0};
+	    for(int i=0;i<V;i++){
+	        for(auto it:adj[i]){
+	            inorder[it]++;
+	        }
+	    }
+	    for(int i=0;i<V;i++){
+	        if(inorder[i]==0){
+	            q.push(i);
+	        }
+	    }
+	    while(!q.empty()){
+	        int front=q.front();
+	        q.pop();
+	        v.push_back(front);
+	        for(auto it:adj[front]){
+	            inorder[it]--;
+	            if(inorder[it]==0)q.push(it);
+	        }
+	        
 	    }
 	    return v;
 	}
