@@ -85,7 +85,7 @@ class Solution {
 
 *************************************
 
-//bfs
+//bfs(topo sort)
 
 class Solution {
   public:
