@@ -54,6 +54,7 @@ Constraints:
 0 ≤ S < V
 
 *****************************************
+//using priority queue
 
 class Solution
 {
@@ -83,3 +84,45 @@ class Solution
         return dist;
     }
 };
+
+**********************************
+//using set(it stores unique elements in sorted(ascending by default) order)
+
+class Solution
+{
+	public:
+	//Function to find the shortest distance of all the vertices
+    //from the source vertex S.
+    vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
+    {
+        // Code here
+        set<pair<int,int>>st;
+        vector<int>dist(V,1e9);
+        dist[S]=0;
+        st.insert({0,S});
+        while(!st.empty()){
+            auto it=*(st.begin());
+            int dist2=it.first;
+            int node=it.second;
+            st.erase(st.begin());
+            for(auto it:adj[node]){
+                int edgeWeight=it[1];
+                int adjNode=it[0];
+                if(dist2+edgeWeight<dist[adjNode]){
+                    if(dist[adjNode]!=1e9){
+                        st.erase({dist[adjNode],adjNode});
+                    }
+                    dist[adjNode]=dist2+edgeWeight;
+                    st.insert({dist[adjNode],adjNode});
+                }
+            }
+        }
+        return dist;
+    }
+};
+
+******************************
+you can solve this problem by using queue also...its just TC and SC that vary!
+bad TC and SC using queue.
+
+
