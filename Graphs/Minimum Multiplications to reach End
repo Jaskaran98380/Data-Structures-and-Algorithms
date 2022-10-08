@@ -54,9 +54,9 @@ class Solution {
             q.pop();
             for(auto it:arr){
                 int num=(node*it)%100000;
+                if(num==end)return step+1;
                 if(step+1<steps[num]){
                     steps[num]=step+1;
-                    if(num==end)return step+1;
                     q.push({step+1,num});
                 }
             }
