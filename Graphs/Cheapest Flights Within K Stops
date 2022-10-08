@@ -50,7 +50,7 @@ class Solution {
             for(auto it:adj[node]){
                 int adjNode=it.first;
                 int edgeWeight=it.second;
-                if(cost2+edgeWeight<cost[adjNode] && stops<=k){
+                if(cost2+edgeWeight<cost[adjNode] && stops<=k){   // still works if you wont add && condition!
                     cost[adjNode]=cost2+edgeWeight;
                     q.push({stops+1,{cost[adjNode],adjNode}});
                 }
