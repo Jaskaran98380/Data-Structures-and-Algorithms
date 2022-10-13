@@ -1,0 +1,9 @@
+Follow up question of Frog Jump!
+In that question frog can jump only 1 or 2 steps but here it can jump anywhere between 1 and k.
+This question was not on coding ninjas leetcode etc.
+
+***************************
+
+The only change that you have to do here is you have to check for minimum from 1 to k(Basically you have to use a loop)
+In previous one you were checking for 1 step and 2 steps and whichever gives you minimum you return that to recursive call.
+Similarly here instead of checking just 1 and 2 you have to check from 1 to k and whichever gives you minimum you have to return that to recursive call!
