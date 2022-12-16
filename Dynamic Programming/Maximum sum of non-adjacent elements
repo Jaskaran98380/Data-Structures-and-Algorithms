@@ -1,0 +1,66 @@
+https://www.codingninjas.com/codestudio/problems/maximum-sum-of-non-adjacent-elements_843261?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0
+
+*******************************
+//memoisation
+
+#include <bits/stdc++.h> 
+int func(vector<int>&dp,vector<int>&nums,int n){
+    if(n==0)return nums[0];
+    if(n<0)return 0;
+    if(dp[n]!=-1)return dp[n];
+    int pick=nums[n]+func(dp,nums,n-2);
+    int nPick=func(dp,nums,n-1);
+    return dp[n]=max(pick,nPick);
+}
+
+int maximumNonAdjacentSum(vector<int> &nums){
+    // Write your code here.
+    int n=nums.size();
+    vector<int>dp(n,-1);
+    return func(dp,nums,n-1);
+}
+
+*******************************
+//tabulation
+
+#include <bits/stdc++.h> 
+int maximumNonAdjacentSum(vector<int> &nums){
+    // Write your code here.
+    int n=nums.size();
+    vector<int>dp(n);
+    dp[0]=nums[0];
+    for(int i=1;i<n;i++){
+        int pick=nums[i];
+        if(i>1){
+            pick+=dp[i-2];
+        }
+        int nPick=dp[i-1];
+        dp[i]=max(pick,nPick);
+    }
+    return dp[n-1];
+    
+}
+
+*********************************
+//space optimisation
+
+#include <bits/stdc++.h> 
+int maximumNonAdjacentSum(vector<int> &nums){
+    // Write your code here.
+    int n=nums.size();
+    vector<int>dp(n);
+    int second=nums[0];
+    int first=0;
+    for(int i=1;i<n;i++){
+        int pick=nums[i];
+        if(i>1){
+            pick=nums[i]+first;
+        }
+        int nPick=second;
+        int third=max(pick,nPick);
+        first=second;
+        second=third;
+    }
+    return second;
+    
+}
