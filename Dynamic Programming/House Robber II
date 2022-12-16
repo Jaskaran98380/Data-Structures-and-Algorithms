@@ -1,0 +1,121 @@
+https://www.codingninjas.com/codestudio/problems/house-robber_839733?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0
+
+********************************
+//memo
+
+#include <bits/stdc++.h> 
+long long int func(vector<long long int>&dp,vector<int>&nums,int n){
+    if(n==0){
+        return nums[0];
+    }
+    if(n<0)return 0;
+    if(dp[n]!=-1)return dp[n];
+    long long int pick=nums[n]+func(dp,nums,n-2);
+    long long int nPick=func(dp,nums,n-1);
+    return dp[n]=max(pick,nPick);
+}
+long long int houseRobber(vector<int>& nums)
+{
+    // Write your code here.
+      int n=nums.size();
+    if(n==1)return nums[0];
+    vector<long long int>dp(n,-1);
+    vector<long long int>dp2(n,-1);
+    vector<int>temp1;
+    vector<int>temp2;
+    for(int i=0;i<n;i++){
+        if(i!=0){
+            temp1.push_back(nums[i]);
+        }
+        if(i!=n-1){
+            temp2.push_back(nums[i]);
+        }
+    }
+    int s=temp1.size();
+    return max(func(dp,temp1,s-1),func(dp2,temp2,s-1));
+    
+}
+
+//another way of memo
+#include <bits/stdc++.h> 
+long long int func(vector<long long int>&dp,vector<int>&nums,int si,int n){
+    if(n==si){
+        return nums[si];
+    }
+    if(n<si)return 0;
+    if(dp[n]!=-1)return dp[n];
+    long long int pick=nums[n]+func(dp,nums,si,n-2);
+    long long int nPick=func(dp,nums,si,n-1);
+    return dp[n]=max(pick,nPick);
+}
+long long int houseRobber(vector<int>& nums)
+{
+    // Write your code here.
+      int n=nums.size();
+    if(n==1)return nums[0];
+    vector<long long int>dp(n,-1);
+    vector<long long int>dp2(n,-1);
+
+    return max(func(dp,nums,0,n-2),func(dp2,nums,1,n-1));
+    
+}
+
+
+************************
+//tab
+#include <bits/stdc++.h> 
+
+long long int fun(vector<int>&nums,int si,int end){
+     vector<long long int>dp(end,0);
+    dp[si]=nums[si];
+    for(int i=si+1;i<end;i++){
+        long long int pick=nums[i];
+        if(i>1){                                // or i>si+1
+            pick+=dp[i-2];
+        }
+        long long int nPick=dp[i-1];
+        dp[i]=max(pick,nPick);
+    }
+    return dp[end-1];
+}
+long long int houseRobber(vector<int>& nums)
+{
+    // Write your code here.
+    int n=nums.size();
+    if(n==1)return nums[0];
+    return max(fun(nums,0,n-1),fun(nums,1,n));
+       
+   
+}
+
+*******************************
+//space optimisation
+
+#include <bits/stdc++.h> 
+
+long long int fun(vector<int>&nums,int si,int end){
+     
+    long long int second=nums[si];
+    long long int first=0;
+    for(int i=si+1;i<end;i++){
+        long long int pick=nums[i];
+        if(i>si+1){
+            pick+=first;
+        }
+        long long int nPick=second;
+        long long int third=max(pick,nPick);
+        first=second;
+        second=third;
+    }
+    return second;
+}
+long long int houseRobber(vector<int>& nums)
+{
+    // Write your code here.
+    int n=nums.size();
+    if(n==1)return nums[0];
+    return max(fun(nums,0,n-1),fun(nums,1,n));
+       
+   
+}
+
