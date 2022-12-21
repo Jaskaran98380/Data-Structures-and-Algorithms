@@ -34,7 +34,7 @@ int minimumPathSum(vector<vector<int>>& triangle, int n){
         dp[n-1][i]=triangle[n-1][i];
     }
     for(int i=n-2;i>=0;i--){
-        for(int j=i;j>=0;j--){
+        for(int j=i;j>=0;j--){                                        //can go from 0 to i also!
             int down=triangle[i][j]+dp[i+1][j];
             int dg=triangle[i][j]+dp[i+1][j+1];
             dp[i][j]=min(down,dg);
@@ -56,7 +56,7 @@ int minimumPathSum(vector<vector<int>>& triangle, int n){
     }
     for(int i=n-2;i>=0;i--){
         vector<int>curr(n,0);
-        for(int j=i;j>=0;j--){
+        for(int j=i;j>=0;j--){                                       //can go from 0 to i also!
             int down=triangle[i][j]+prev[j];
             int dg=triangle[i][j]+prev[j+1];
             curr[j]=min(down,dg);
