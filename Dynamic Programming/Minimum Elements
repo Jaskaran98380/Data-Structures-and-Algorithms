@@ -1,0 +1,83 @@
+https://www.codingninjas.com/codestudio/problems/minimum-elements_3843091?leftPanelTab=0
+
+***************************
+//memo
+
+#include <bits/stdc++.h> 
+int func(vector<int>&num,int tar,int ind,vector<vector<int>>&dp){
+    if(ind==0){
+        if(tar%num[ind]==0)return tar/num[ind];
+        return 1e9;
+    }
+    if(dp[ind][tar]!=-1)return dp[ind][tar];
+    int notPick=0+func(num,tar,ind-1,dp);
+    int pick=1e9;
+    if(num[ind]<=tar) pick=1+func(num,tar-num[ind],ind,dp);
+    return dp[ind][tar]= min(notPick,pick);
+}
+
+int minimumElements(vector<int> &num, int x)
+{
+    // Write your code here.
+    int n=num.size();
+    vector<vector<int>>dp(n,vector<int>(x+1,-1));
+    int ans=func(num,x,n-1,dp);
+    if(ans>=1e9){
+        return -1;
+    }
+    return ans;
+}
+
+**************************
+//tab
+
+#include <bits/stdc++.h> 
+
+int minimumElements(vector<int> &num, int x)
+{
+    // Write your code here.
+    int n=num.size();
+    vector<vector<int>>dp(n,vector<int>(x+1,1e9));
+    for(int i=0;i<=x;i++){
+        if(i%num[0]==0)dp[0][i]=i/num[0];
+    }
+    for(int i=1;i<n;i++){
+        for(int j=0;j<=x;j++){
+            int notPick = 0 + dp[i-1][j];
+            int pick=1e9;
+            if(num[i]<=j)pick=1+dp[i][j-num[i]];
+            dp[i][j]=min(pick,notPick);
+        }
+    }
+    if(dp[n-1][x]>=1e9)return -1;
+    return dp[n-1][x];
+}
+
+**************************
+//space optimisation
+
+#include <bits/stdc++.h> 
+
+int minimumElements(vector<int> &num, int x)
+{
+    // Write your code here.
+    int n=num.size();
+    vector<int>prev(x+1,1e9);
+    vector<int>curr(x+1,0);
+    for(int i=0;i<=x;i++){
+        if(i%num[0]==0)prev[i]=i/num[0];
+    }
+    for(int i=1;i<n;i++){
+        for(int j=0;j<=x;j++){
+            int notPick = 0 + prev[j];
+            int pick=1e9;
+            if(num[i]<=j)pick=1+curr[j-num[i]];
+            curr[j]=min(pick,notPick);
+        }
+        prev=curr;
+    }
+    if(prev[x]>=1e9)return -1;
+    return prev[x];
+}
+
+
