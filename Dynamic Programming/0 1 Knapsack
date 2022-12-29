@@ -1,0 +1,88 @@
+https://www.codingninjas.com/codestudio/problems/0-1-knapsack_920542?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0
+
+****************************
+//memo
+
+#include <bits/stdc++.h> 
+int func(vector<int>weight,vector<int>value,int ind,int W,vector<vector<int>>&dp){
+    if(ind==0){
+        if(weight[ind]<=W){
+            return value[ind];
+        }
+        return 0;
+    }
+    if(dp[ind][W]!=-1)return dp[ind][W];
+    int notPick=func(weight,value,ind-1,W,dp);
+    int pick=-1e9;
+    if(weight[ind]<=W) pick = value[ind]+func(weight,value,ind-1,W-weight[ind],dp);
+    return dp[ind][W] = max(pick,notPick);
+}
+
+int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight) 
+{
+	// Write your code here
+    vector<vector<int>>dp(n,vector<int>(maxWeight+1,-1));
+    return func(weight,value,n-1,maxWeight,dp);
+}
+
+*********************************
+//tab
+
+#include <bits/stdc++.h> 
+
+
+int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight) 
+{
+	// Write your code here
+    vector<vector<int>>dp(n,vector<int>(maxWeight+1,0));
+    for(int i=0;i<n;i++){
+        dp[i][0]=0;
+    }
+    for(int i=0;i<=maxWeight;i++){
+        if(weight[0]<=i){
+            dp[0][i]=value[0];
+        }
+    }
+    for(int i=1;i<n;i++){
+        for(int j=1;j<=maxWeight;j++){
+            int notPick=dp[i-1][j];
+            int pick=-1e9;
+            if(weight[i]<=j){
+                pick=value[i]+dp[i-1][j-weight[i]];
+            }
+            dp[i][j]=max(pick,notPick);
+        }
+    }
+    return dp[n-1][maxWeight];
+}
+
+**************************
+//space optimisation
+
+#include <bits/stdc++.h> 
+
+
+int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight) 
+{
+	// Write your code here
+    vector<int>prev(maxWeight+1,0);
+    vector<int>curr(maxWeight+1,0);
+ 
+    for(int i=0;i<=maxWeight;i++){
+        if(weight[0]<=i){
+            prev[i]=value[0];
+        }
+    }
+    for(int i=1;i<n;i++){
+        for(int j=1;j<=maxWeight;j++){
+            int notPick=prev[j];
+            int pick=-1e9;
+            if(weight[i]<=j){
+                pick=value[i]+prev[j-weight[i]];
+            }
+            curr[j]=max(pick,notPick);
+        }
+        prev=curr;
+    }
+    return prev[maxWeight];
+}
