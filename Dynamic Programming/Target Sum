@@ -1,0 +1,98 @@
+https://www.codingninjas.com/codestudio/problems/target-sum_4127362?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0
+
+*************************
+//memo
+
+#include <bits/stdc++.h> 
+
+int func(vector<int>&arr,int tar,int ind,vector<vector<int>>&dp){
+    if(ind==0){
+        if(tar==0 && arr[ind]==0)return 2;
+        if(arr[ind]==tar || tar==0)return 1;
+        return 0;}
+    if(dp[ind][tar]!=-1)return dp[ind][tar];
+        int notPick=func(arr,tar,ind-1,dp);
+        int pick=0;
+        if(arr[ind]<=tar)pick=func(arr,tar-arr[ind],ind-1,dp);
+        return dp[ind][tar] = pick+notPick;
+    
+}
+int targetSum(int n, int target, vector<int>& arr) {
+    // Write your code here.
+    int sum=0;
+    for(int i=0;i<n;i++){
+        sum+=arr[i];
+        }
+    if(sum-target<0 || (sum-target)%2)return false;
+    int tar=(sum-target)/2;
+    vector<vector<int>>dp(n,vector<int>(tar+1,-1));
+    return func(arr,tar,n-1,dp);
+}
+
+
+**************************
+//tab
+
+#include <bits/stdc++.h> 
+
+
+int targetSum(int n, int target, vector<int>& arr) {
+    // Write your code here.
+    int sum=0;
+    for(int i=0;i<n;i++){
+        sum+=arr[i];
+        }
+    if(sum-target<0 || (sum-target)%2)return false;
+    int tar=(sum-target)/2;
+    vector<vector<int>>dp(n,vector<int>(tar+1,0));
+    for(int i=0;i<=tar;i++){
+          if(i==0 && arr[0]==0)dp[0][i] = 2;
+       else if(arr[0]==i || i==0)dp[0][i] = 1;
+    }
+    for(int i=1;i<n;i++){
+        for(int j=0;j<=tar;j++){
+        int notPick=dp[i-1][j];
+        int pick=0;
+        if(arr[i]<=j)pick=dp[i-1][j-arr[i]];
+        dp[i][j] = pick+notPick;
+        }
+    }
+    return dp[n-1][tar];
+}
+
+
+**************************
+//space optimisation
+
+#include <bits/stdc++.h> 
+
+
+int targetSum(int n, int target, vector<int>& arr) {
+    // Write your code here.
+    int sum=0;
+    for(int i=0;i<n;i++){
+        sum+=arr[i];
+        }
+    if(sum-target<0 || (sum-target)%2)return false;
+    int tar=(sum-target)/2;
+     vector<int>prev(tar+1,0);
+    vector<int>curr(tar+1,0);
+    for(int i=0;i<=tar;i++){
+         if(i==0 && arr[0]==0){
+             prev[i]=2;
+         }
+         else if(i==0 || i==arr[0]){
+             prev[i]=1;
+         }     
+    }
+    for(int i=1;i<n;i++){
+        for(int j=0;j<=tar;j++){
+             int notTake=prev[j];
+             int take=0;
+             if(arr[i]<=j) take=prev[j-arr[i]];
+             curr[j]= (notTake+take);
+        }
+        prev=curr;
+    }
+    return prev[tar];
+}
