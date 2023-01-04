@@ -1,0 +1,52 @@
+https://www.codingninjas.com/codestudio/problems/longest-common-substring_1235207?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0
+
+***************************
+//tab
+
+#include <bits/stdc++.h> 
+int lcs(string &s, string &t){
+	//	Write your code here.
+    int s1=s.length();
+    int s2=t.length();
+    vector<vector<int>>dp(s1+1,vector<int>(s2+1,0));
+    int maxi=0;
+     for(int i=1;i<=s1;i++){
+        for(int j=0;j<=s2;j++){
+            if(j==0)dp[i][j]=0;
+             if(s[i-1]==t[j-1]){
+        dp[i][j] = 1 + dp[i-1][j-1];
+    }
+            else{
+     dp[i][j] = 0;
+            }
+            maxi=max(maxi,dp[i][j]);
+        }
+    }
+    return maxi;
+}
+
+//space optimisation
+
+#include <bits/stdc++.h> 
+int lcs(string &s, string &t){
+	//	Write your code here.
+    int s1=s.length();
+    int s2=t.length();
+    vector<int>prev(s2+1,0);
+    vector<int>curr(s2+1,0);
+    int maxi=0;
+     for(int i=1;i<=s1;i++){
+        for(int j=0;j<=s2;j++){
+            if(j==0)curr[j]=0;
+             if(s[i-1]==t[j-1]){
+        curr[j] = 1 + prev[j-1];
+    }
+            else{
+     curr[j] = 0;
+            }
+            maxi=max(maxi,curr[j]);
+        }
+         prev=curr;
+    }
+    return maxi;
+}
