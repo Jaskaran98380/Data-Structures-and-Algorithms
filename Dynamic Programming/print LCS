@@ -1,0 +1,48 @@
+//If asked to write a longest common subsequence instead of writing length.
+
+int lcs(string s, string t)
+{
+	//Write your code here
+     int s1=s.length();
+     int s2=t.length();
+     vector<vector<int>>dp(s1+1,vector<int>(s2+1,0));
+     for(int i=0;i<=s2;i++){
+         dp[0][i]=0;
+     }
+    for(int i=1;i<=s1;i++){
+        for(int j=0;j<=s2;j++){
+            if(j==0)dp[i][j]=0;
+             if(s[i-1]==t[j-1]){
+        dp[i][j] = 1 + dp[i-1][j-1];
+    }
+            else{
+     dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
+            }
+        }
+    }
+    int len=dp[s1][s2];
+    string str="";
+    for(int i=0;i<len;i++){
+      {
+        str+='$';
+      }
+      int index=len-1;
+      int i=s1,j=s2;
+      while(i > 0 && j > 0){
+      if(s[i-1]==t[j-1]){
+      str[index]=s[i-1];
+      i--;
+      j--;
+      index--;
+      }
+      else if(dp[i-1][j]>dp[i][j-1]){
+      i--;
+      }
+      else{
+      j--;
+      }
+      }
+      cout<<str;
+}
+
+//this question was not there on any platform,so have written the code here only so kindly avoid some syntactical errors if any!
