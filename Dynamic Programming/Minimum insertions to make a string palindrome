@@ -1,0 +1,93 @@
+https://www.codingninjas.com/codestudio/problems/minimum-insertions-to-make-palindrome_985293?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0
+
+**************************
+//memo
+
+#include <bits/stdc++.h> 
+int func(int s1,int s2, string s, string t,vector<vector<int>>&dp){
+    if(s1<0 || s2<0)return 0;
+    if(dp[s1][s2]!=-1){
+        return dp[s1][s2];
+    }
+    if(s[s1]==t[s2]){
+        return dp[s1][s2] = 1+func(s1-1,s2-1,s,t,dp);
+    }
+    return dp[s1][s2] = max(func(s1-1,s2,s,t,dp),func(s1,s2-1,s,t,dp));
+}
+
+int minInsertion(string &s)
+{
+    // Write your code here.
+    string t=s;
+    reverse(t.begin(),t.end());
+     int s1=s.length();
+     int s2=t.length();
+     vector<vector<int>>dp(s1,vector<int>(s2,-1));
+     int lps=func(s1-1,s2-1,s,t,dp);
+     return s1-lps;
+}
+
+****************************
+//tab
+
+#include <bits/stdc++.h> 
+
+
+int minInsertion(string &s)
+{
+    // Write your code here.
+     string t=s;
+     reverse(t.begin(),t.end());
+     int s1=s.length();
+     int s2=t.length();
+     vector<vector<int>>dp(s1+1,vector<int>(s2+1,0));
+     for(int i=0;i<=s2;i++){
+         dp[0][i]=0;
+     }
+    for(int i=1;i<=s1;i++){
+        for(int j=0;j<=s2;j++){
+            if(j==0)dp[i][j]=0;
+             if(s[i-1]==t[j-1]){
+        dp[i][j] = 1 + dp[i-1][j-1];
+    }
+            else{
+     dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
+            }
+        }
+    }
+    return s1-dp[s1][s2];
+}
+
+*************************
+//space optimisation
+
+#include <bits/stdc++.h> 
+
+
+int minInsertion(string &s)
+{
+    // Write your code here.
+     string t=s;
+     reverse(t.begin(),t.end());
+     int s1=s.length();
+     int s2=t.length();
+      vector<int>prev(s2+1);
+    vector<int>curr(s2+1);
+     for(int i=0;i<=s2;i++){
+         prev[i]=0;
+     }
+    for(int i=1;i<=s1;i++){
+        for(int j=0;j<=s2;j++){
+            if(j==0)curr[j]=0;
+             if(s[i-1]==t[j-1]){
+        curr[j] = 1 + prev[j-1];
+    }
+            else{
+     curr[j] = max(prev[j],curr[j-1]);
+            }
+        }
+        prev=curr;
+    }
+    return s1-prev[s2];
+    
+}
