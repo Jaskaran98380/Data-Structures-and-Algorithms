@@ -1,0 +1,85 @@
+https://www.codingninjas.com/codestudio/problems/subsequence-counting_3755256?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0
+***************************
+//memoisation
+
+#include <bits/stdc++.h> 
+int mod=1e9+7;
+int func(int tInd,int sInd,string &t,string &s,vector<vector<int>>dp){
+    if(sInd<0)return 1;
+    if(tInd<0)return 0;
+    if(dp[tInd][sInd]!=-1)return dp[tInd][sInd];
+    if(t[tInd]==s[sInd]){
+        return dp[tInd][sInd]=func(tInd-1,sInd-1,t,s,dp)%mod+func(tInd-1,sInd,t,s,dp)%mod;
+    }
+    else{
+        return dp[tInd][sInd]=func(tInd-1,sInd,t,s,dp)%mod;
+    }
+}
+
+int subsequenceCounting(string &t, string &s, int lt, int ls) {
+    // Write your code here.
+    vector<vector<int>>dp(lt,vector<int>(ls,-1));
+    return func(lt-1,ls-1,t,s,dp)%mod;
+} 
+
+***************************
+//tabulation
+
+#include <bits/stdc++.h> 
+int mod=1e9+7;
+int subsequenceCounting(string &t, string &s, int lt, int ls) {
+    // Write your code here.
+    vector<vector<int>>dp(lt+1,vector<int>(ls+1,0));
+    for(int i=0;i<=lt;i++){
+        dp[i][0]=1;
+    }
+    for(int i=1;i<=lt;i++){
+        for(int j=1;j<=ls;j++){
+               if(t[i-1]==s[j-1]){
+        dp[i][j]=dp[i-1][j-1] % mod + dp[i-1][j] % mod;
+    }
+    else{
+         dp[i][j]=dp[i-1][j] % mod;
+    }
+        }
+    }
+    return dp[lt][ls] % mod;
+ 
+} 
+
+
+****************************
+//space optimisation
+
+#include <bits/stdc++.h> 
+int mod=1e9+7;
+int func(int tInd,int sInd,string &t,string &s,vector<vector<int>>dp){
+    if(sInd<0)return 1;
+    if(tInd<0)return 0;
+    if(dp[tInd][sInd]!=-1)return dp[tInd][sInd];
+    if(t[tInd]==s[sInd]){
+        return dp[tInd][sInd]=func(tInd-1,sInd-1,t,s,dp)%mod+func(tInd-1,sInd,t,s,dp)%mod;
+    }
+    else{
+        return dp[tInd][sInd]=func(tInd-1,sInd,t,s,dp)%mod;
+    }
+}
+
+int subsequenceCounting(string &t, string &s, int lt, int ls) {
+    // Write your code here.
+    vector<int>prev(ls+1,0),curr(ls+1,1);
+    prev[0]=1;
+    for(int i=1;i<=lt;i++){
+        for(int j=1;j<=ls;j++){
+               if(t[i-1]==s[j-1]){
+        curr[j]=prev[j-1] % mod + prev[j] % mod;
+    }
+    else{
+         curr[j]=prev[j] % mod;
+    }
+        }
+        prev=curr;
+    }
+    return prev[ls] % mod;
+ 
+} 
