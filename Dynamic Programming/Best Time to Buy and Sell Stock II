@@ -1,0 +1,106 @@
+https://www.codingninjas.com/codestudio/problems/selling-stock_630282?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0
+
+//memo
+
+#include<bits/stdc++.h>
+long func(long *values,int n,int ind,int buy,vector<vector<long>>&dp){
+    if(ind==n)return 0;
+    if(dp[ind][buy]!=-1)return dp[ind][buy];
+    long profit=0;
+    
+    if(buy==0){
+        profit=max(-values[ind]+func(values,n,ind+1,1,dp),func(values,n,ind+1,0,dp));
+    }
+    else{
+        profit=max(values[ind]+func(values,n,ind+1,0,dp),func(values,n,ind+1,1,dp));
+    }
+    return dp[ind][buy] = profit;
+}
+
+long getMaximumProfit(long *values, int n)
+{
+    //Write your code here
+    vector<vector<long>>dp(n,vector<long>(2,-1));
+    return func(values,n,0,0,dp);
+}
+
+******************************
+/tab
+
+#include<bits/stdc++.h>
+
+long getMaximumProfit(long *values, int n)
+{
+    //Write your code here
+    vector<vector<long>>dp(n+1,vector<long>(2,0));
+    dp[n][0]=dp[n][1]=0;
+    for(int ind=n-1;ind>=0;ind--){
+        for(int buy=0;buy<=1;buy++){
+            long profit=0;
+            if(buy==0){
+                profit=max(-values[ind]+dp[ind+1][1],dp[ind+1][0]);
+            }
+            else{
+                profit=max(values[ind]+dp[ind+1][0],dp[ind+1][1]);
+            }
+            dp[ind][buy]=profit;
+        }
+       
+    }
+     return dp[0][0];
+}
+
+************************
+//space optimisation
+
+#include<bits/stdc++.h>
+
+long getMaximumProfit(long *values, int n)
+{
+    //Write your code here
+    vector<long>ahead(2,0),curr(2,0);
+    for(int ind=n-1;ind>=0;ind--){
+        for(int buy=0;buy<=1;buy++){
+            long profit=0;
+            if(buy==0){
+                profit=max(-values[ind]+ahead[1],ahead[0]);
+            }
+            else{
+                profit=max(values[ind]+ahead[0],ahead[1]);
+            }
+            curr[buy]=profit;
+        }
+       ahead=curr;
+    }
+     return ahead[0];
+}
+
+*************************
+space optimisation(using 4 variable approach)
+
+#include<bits/stdc++.h>
+
+long getMaximumProfit(long *values, int n)
+{
+    //Write your code here
+    long ahead1=0,ahead2=0,curr1,curr2;
+    for(int ind=n-1;ind>=0;ind--){
+        for(int buy=0;buy<=1;buy++){
+            long profit=0;
+            if(buy==0){
+                profit=max(-values[ind]+ahead2,ahead1);
+            }
+            else{
+                profit=max(values[ind]+ahead1,ahead2);
+            }
+            if(buy==0)
+            curr1=profit;
+            else{
+                curr2=profit;
+            }
+        }
+       ahead1=curr1;
+       ahead2=curr2;
+    }
+     return ahead1;
+}
