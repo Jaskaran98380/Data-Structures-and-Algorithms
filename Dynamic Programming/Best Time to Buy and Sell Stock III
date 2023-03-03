@@ -1,7 +1,7 @@
 https://www.codingninjas.com/codestudio/problems/buy-and-sell-stock_1071012?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0
 
 ************************
-//memo
+//memo(N*2*3)
 
 #include <bits/stdc++.h> 
 
@@ -57,3 +57,67 @@ int maxProfit(vector<int>& values, int n)
 
 *************************
 //space optimisation
+
+#include <bits/stdc++.h> 
+
+int maxProfit(vector<int>& values, int n)
+{
+    // Write your code here.
+  vector<vector<int>>ahead(2,vector<int>(3,0));
+  vector<vector<int>>curr(2,vector<int>(3,0));
+    for(int ind=n-1;ind>=0;ind--){
+        for(int buy=0;buy<=1;buy++){
+            for(int cap=1;cap<=2;cap++){
+                        int profit=0;
+            
+            if(buy==0){
+                profit=max(-values[ind]+ahead[1][cap],ahead[0][cap]);
+            }
+            else{
+                profit=max(values[ind]+ahead[0][cap-1],ahead[1][cap]);
+            }
+             curr[buy][cap] = profit;
+            }
+            ahead=curr;
+            
+        }
+       
+    }
+     return ahead[0][2];
+}
+
+*******************************
+another way (using N*4)
+******
+//memo
+
+#include <bits/stdc++.h> 
+
+int func(vector<int> &values,int n,int ind,vector<vector<int>>&dp,int transNumber){
+    if(transNumber==4)return 0;
+    if(ind==n)return 0;
+    if(dp[ind][transNumber]!=-1)return dp[ind][transNumber];
+    int profit=0;
+    
+    if(transNumber%2==0){
+        profit=max(-values[ind]+func(values,n,ind+1,dp,transNumber+1),func(values,n,ind+1,dp,transNumber));
+    }
+    else{
+        profit=max(values[ind]+func(values,n,ind+1,dp,transNumber+1),func(values,n,ind+1,dp,transNumber));
+    }
+    return dp[ind][transNumber] = profit;
+}
+int maxProfit(vector<int>& values, int n)
+{
+    // Write your code here.
+    vector<vector<int>>dp(n,vector<int>(4,-1));
+    return func(values,n,0,dp,0);
+}
+
+
+//here the logic is we have to do 2 transactions i.e B S B S and we assign numbers to them say 0 1 2 3 then at even numbers we have to do buy and at odd numbers we have to sell the share!
+
+
+
+************************
+//similarly can do for tabulation as well as well as space optimisation!
