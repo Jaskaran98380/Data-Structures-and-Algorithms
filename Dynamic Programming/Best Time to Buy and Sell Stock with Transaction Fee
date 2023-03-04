@@ -34,7 +34,7 @@ int maximumProfit(int n, int fee, vector<int> &prices) {
     // Write your code here.
     vector<vector<int>>dp(n+1,vector<int>(2,0));
     for(int ind=n-1;ind>=0;ind--){
-        for(int buy=0;buy<=1;buy++){                                            //you can also omit this inner loop as it iterates for only 2 times and also each time changing the value of just the one so you can simply write dp[ind][0] and dp[ind][1] respectively! 
+        for(int buy=0;buy<=1;buy++){                                            //you can also omit this inner loop as it iterates for only 2 times and also each time changing the value of just the one so you can simply write dp[ind][0] and dp[ind][1] respectively and that will be an optimised approach! 
             if(buy==0){
                 dp[ind][buy]=max(-prices[ind]+dp[ind+1][1],dp[ind+1][0]);
             }
