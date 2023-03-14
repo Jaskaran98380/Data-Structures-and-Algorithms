@@ -1,0 +1,64 @@
+https://www.codingninjas.com/codestudio/problems/longest-increasing-subsequence_630459?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0
+
+************************
+//memo
+
+#include<bits/stdc++.h>
+// int func(int arr[],int n,int prevInd,int ind,vector<vector<int>>&dp){
+//     if(ind==n)return 0;
+//     if(dp[ind][prevInd+1]!=-1)return dp[ind][prevInd+1];
+//     int nPick=func(arr,n,prevInd,ind+1,dp);
+//     int pick=INT_MIN;
+//     if(arr[ind]>arr[prevInd] || prevInd==-1){
+//         pick=1+func(arr,n,ind,ind+1,dp);
+//     }
+//     return dp[ind][prevInd+1]=max(pick,nPick);
+// }
+
+// int longestIncreasingSubsequence(int arr[], int n)
+// {
+//     // Write Your Code here
+//     vector<vector<int>>dp(n,vector<int>(n+1,-1));
+//     return func(arr,n,-1,0,dp);
+// }
+
+****************************
+//tab
+
+int longestIncreasingSubsequence(int arr[], int n)
+{
+    // Write Your Code here
+    vector<vector<int>>dp(n+1,vector<int>(n+1,0));
+    for(int ind=n-1;ind>=0;ind--){
+        for(int prevInd=ind-1;prevInd>=-1;prevInd--){
+            int nPick=dp[ind+1][prevInd+1];
+            int pick=INT_MIN;
+            if(arr[ind]>arr[prevInd] || prevInd==-1){
+                pick=1+dp[ind+1][ind+1];
+            }
+            dp[ind][prevInd+1]=max(pick,nPick);
+        }
+    }
+    return dp[0][-1+1];
+}
+
+************************
+//space opt
+
+int longestIncreasingSubsequence(int arr[], int n)
+{
+    // Write Your Code here
+    vector<int>prev(n+1,0),curr(n+1,0);
+    for(int ind=n-1;ind>=0;ind--){
+        for(int prevInd=ind-1;prevInd>=-1;prevInd--){
+            int nPick=prev[prevInd+1];
+            int pick=INT_MIN;
+            if(arr[ind]>arr[prevInd] || prevInd==-1){
+                pick=1+prev[ind+1];
+            }
+            curr[prevInd+1]=max(pick,nPick);
+        }
+        prev=curr;
+    }
+    return prev[-1+1];
+}
