@@ -1,0 +1,26 @@
+https://www.codingninjas.com/codestudio/problems/matrix-chain-multiplication_975344?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0
+
+***************************
+
+//memo
+
+//partition DP starts!
+int func(vector<int>&arr,int i,int j,vector<vector<int>>&dp){
+    if(i==j)return 0;
+    int mini=1e9;
+    if(dp[i][j]!=-1)return dp[i][j];
+    for(int k=i;k<j;k++){
+        int steps=arr[i-1]*arr[k]*arr[j] + func(arr,i,k,dp) + func(arr,k+1,j,dp);
+        mini=min(mini,steps);
+    }
+    return dp[i][j] = mini;
+}
+
+#include <bits/stdc++.h> 
+
+int matrixMultiplication(vector<int> &arr, int N)
+{
+    // Write your code here.
+    vector<vector<int>>dp(N,vector<int>(N,-1));
+    return func(arr,1,N-1,dp);
+}
