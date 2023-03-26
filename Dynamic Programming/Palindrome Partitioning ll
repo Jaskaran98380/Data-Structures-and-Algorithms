@@ -1,0 +1,41 @@
+https://www.codingninjas.com/codestudio/problems/palindrome-partitioning_873266?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0
+
+***************************
+//memo
+
+#include <bits/stdc++.h> 
+
+bool isPallindrome(int first,int second,string &str){
+       while(first<=second){
+            if(str[first]==str[second]){
+                first++;
+                second--;
+            }
+            else{
+                return false;
+            }
+        }
+        return true;
+}
+int func(string &str,int i,int n,vector<int>&dp){
+    if(i==n)return 0;
+    int mini=1e9;
+    if(dp[i]!=-1)return dp[i];
+    for(int ind=i;ind<n;ind++){
+        if(isPallindrome(i,ind,str)){
+             int cnt= 1+ func(str,ind+1,n,dp);
+             mini=min(cnt,mini);
+        }
+    }
+    return dp[i] = mini;
+}
+int palindromePartitioning(string str) {
+    // Write your code here
+    int n=str.size();
+    vector<int>dp(n,-1);
+    return func(str,0,n,dp)-1;
+}
+
+**************************
+//tab
+
