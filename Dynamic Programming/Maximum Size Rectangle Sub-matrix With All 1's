@@ -1,0 +1,47 @@
+https://www.codingninjas.com/codestudio/problems/maximum-size-rectangle-sub-matrix-with-all-1-s_893017?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0
+
+**************************
+//code
+
+#include<bits/stdc++.h>
+	
+int largestRectangleArea(vector < int > & histo) {
+    stack < int > st;
+      int maxA = 0;
+      int n = histo.size();
+      for (int i = 0; i <= n; i++) {
+        while (!st.empty() && (i == n || histo[st.top()] >= histo[i])) {
+          int height = histo[st.top()];                                                //this entire largestRectangleArea function code is of histogram which is another question.kindly refer to that one if in doubt!
+          st.pop();
+          int width;
+          if (st.empty())
+            width = i;                                                                            
+          else
+            width = i - st.top() - 1;
+          maxA = max(maxA, width * height);
+        }
+        st.push(i);
+      }
+      return maxA;
+    }
+
+
+int maximalAreaOfSubMatrixOfAll1(vector<vector<int>> &mat, int n, int m){
+	// Write your code here.
+	vector<int>hist(m,0);
+	int maxi=-1e9;
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+		if(mat[i][j]==1){
+			hist[j]++;
+		}
+		else{
+			hist[j]=0;
+		}
+	}
+		int sum = largestRectangleArea(hist);
+		maxi=max(maxi,sum);
+	}
+	return maxi;
+	
+}
