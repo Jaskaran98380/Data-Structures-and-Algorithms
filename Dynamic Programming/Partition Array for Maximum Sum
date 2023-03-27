@@ -1,0 +1,53 @@
+https://www.codingninjas.com/codestudio/problems/maximum-subarray_3755255?leftPanelTab=0
+
+**********************
+//memo
+
+#include <bits/stdc++.h> 
+
+int func(vector<int> &num , int n , int i , int k,vector<int>&dp){
+    if(i==n)return 0;
+    if(dp[i]!=-1)return dp[i];
+    int len=0;
+    int a = INT_MIN;
+    int maxi=-1e9;
+    for(int ind=i;ind<min(n,i+k);ind++){
+        len++;
+        a=max(a,num[ind]);
+        int sum=(a * len) + func(num,n,ind+1,k,dp);
+        maxi=max(maxi,sum);
+    }
+    return dp[i] = maxi;
+}
+int maximumSubarray(vector<int> &num, int k)
+{
+    // Write your code here.
+    int n=num.size(); 
+    vector<int>dp(n,-1);                                     
+    return func(num,n,0,k,dp);
+}
+
+************************
+//tab
+
+#include <bits/stdc++.h> 
+
+int maximumSubarray(vector<int> &num, int k)
+{
+    // Write your code here.
+    int n=num.size(); 
+    vector<int>dp(n+1,0);                                     
+    for(int i=n-1;i>=0;i--){
+        int len=0;
+        int a = INT_MIN;
+        int maxi=-1e9;
+        for(int ind=i;ind<min(n,i+k);ind++){
+            len++;
+            a=max(a,num[ind]);
+            int sum=(a * len) + dp[ind+1];
+            maxi=max(maxi,sum);
+        }
+        dp[i] = maxi;
+    }
+    return dp[0];
+}
