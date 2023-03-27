@@ -39,3 +39,34 @@ int palindromePartitioning(string str) {
 **************************
 //tab
 
+#include <bits/stdc++.h> 
+
+bool isPallindrome(int first,int second,string &str){
+       while(first<=second){
+            if(str[first]==str[second]){
+                first++;
+                second--;
+            }
+            else{
+                return false;
+            }
+        }
+        return true;
+}
+int palindromePartitioning(string str) {
+    // Write your code here
+    int n=str.size();
+    vector<int>dp(n+1,0);
+    for(int i=n-1;i>=0;i--){
+         int mini=1e9;
+            for(int ind=i;ind<n;ind++){
+                if(isPallindrome(i,ind,str)){
+                    int cnt= 1+ dp[ind+1];
+                    mini=min(cnt,mini);
+                }
+            }
+            dp[i] = mini;
+    }
+    return dp[0]-1;
+}
+
